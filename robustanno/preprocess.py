@@ -18,8 +18,8 @@ def preprocess(adata, pre = "CLR", dataType = "SP"):
         sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], inplace=True)
         adata = adata[adata.obs["pct_counts_mt"] < 10]
     
-    max_counts = np.percentile(adata.X.sum(axis = 1), 98)
-    min_counts = np.percentile(adata.X.sum(axis = 1), 2)
+    max_counts = np.percentile(np.array(adata.X.sum(axis = 1)).ravel(), 98)
+    min_counts = np.percentile(np.array(adata.X.sum(axis = 1)).ravel(), 2)
     sc.pp.filter_cells(adata, max_counts = max_counts, inplace = True)
     sc.pp.filter_cells(adata, min_counts = min_counts, inplace = True)
     sc.pp.filter_genes(adata, min_cells = 10)
